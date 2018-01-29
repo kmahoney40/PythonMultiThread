@@ -3,8 +3,15 @@
 
 import thread
 import threading
+import readConfig
+import readFromServer
 import curses
-
+import piplates.DAQCplate as DAQC
+import piplates.RELAYplate as RELAY
+import pytz
+import requests
+import json
+import sys
 
 class Operation(threading._Timer):
     def __init__(self, *args, **kwargs):
@@ -36,32 +43,61 @@ class Manager(object):
         self._event.set()
 
 
+helloCount = 0
+kmworldCount = 0
+counters = [0, 0, 0]
+cmnd = ord(' ')
+readChar = " "
+
 if __name__ == '__main__':
-    # Print "Hello World!" every 5 seconds
 
     import time
 
-
-    def hello():
-        print "Hello World!"
-    def kmworld():
-        print "KM World"
-
-    stdscr = curses.initscr()
+    scr = curses.initscr()
     curses.noecho()
-    stdscr.nodelay(1)
+    scr.nodelay(1)
 
-    hello()
-    kmworld()
+    objCfg = readConfig.ConfigObj("config.txt") 
+    if objCfg.exception != None:
+        sys.exit("Error reading config file! "  + str(objCfg.exception))
+    scr.addstr(8, 0, objCfg.configData)
+
+    ret = requests.get(objCfg.url + "door")
+    scr.addstr(30, 0, str(ret.text))
+
+    def hello(count, idx):
+        scr.addstr(3, 0, "Hello World!: " + str(count[idx]) + " " + str(count[2]) + "  ")
+        count[idx] += 1
+    def kmworld(count, idx):
+        scr.addstr(4, 0, "KM World: " + str(count[idx]) + " " + str(count[2]) + "  ")
+        count[idx] += 1
+
+    readServer = readFromServer.ReadFromServer()
+    retVal = ""
     timer = Manager()
-    timer.add_operation(hello, 5)
-    timer.add_operation(kmworld, 3)
+    timer.add_operation(hello, 5, [counters, 0])
+    timer.add_operation(kmworld, 3, [counters, 1])
+    timer.add_operation(readServer.readFromServer, 10, [objCfg, retVal])
 
-    while True:
-        stdscr.addstr(0, 0, "Press \"p\" to show count, \"q\" to exit...")
+    scr.addstr(14, 0,retVal)
 
-        readChar = stdscr.getch()
-        print readChar
+    myContinue = True
+    keepGoing = True
+    while keepGoing:
+        scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
+
+        readChar = scr.getch()
+        if(readChar == curses.ERR):
+            readChar = ord(' ')
+        #lst = [readChar]
+        #readChar = "".join(chr(i) for i in lst)
+        cmnd = readChar
+        if readChar != ord(' '):
+            counters[2] = readChar
+        scr.addstr(5, 0, str(readChar) + "  ")
+        if(readChar == ord('q')):
+            keepGoing = False
+        #line += 1
         time.sleep(1)
 
     curses.endwin()
