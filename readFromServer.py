@@ -15,13 +15,8 @@ class ReadFromServer:
 
     def readFromServer(self, cfgObj, ret):
         try:
-            #scr.addstr(26, 0, "ReadFromServer")
             url = cfgObj.url + "door"
-            ret[0] = "ASDF: " + url + str(time.time()) + " " + str(requests.get(url).text)
-            #counter += 1
-            #scr.addstr(27, 0, str(ret[0]))
-            #myError = 1/0
-           # raise ValueError(str(ret))
+            ret[0] = str(requests.get(url).text)
             time.sleep(2)
         except Exception, ex:
             sys.exit("Error in readFromServer! " + str(ex.message))
