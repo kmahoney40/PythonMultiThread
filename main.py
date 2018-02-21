@@ -5,6 +5,7 @@ import thread
 import threading
 import readConfig
 import readFromServer
+import pi_plates
 import curses
 import piplates.DAQCplate as DAQC
 import piplates.RELAYplate as RELAY
@@ -18,14 +19,15 @@ class Operation(threading._Timer):
     def __init__(self, *args, **kwargs):
         threading._Timer.__init__(self, *args, **kwargs)
         self.setDaemon(True)
-        self.lastStart = time.time()
+        #self.lastStart = time.time()
 
     def run(self):
         while True:
             self.finished.clear()
-            self.finished.wait(self.interval - (time.time() - self.lastStart))
+            #self.finished.wait(self.interval - (time.time() - self.lastStart))
+            self.finished.wait(self.interval)
             if not self.finished.isSet():
-                self.lastStart = time.time()
+                #self.lastStart = time.time()
                 self.function(*self.args, **self.kwargs)
             else:
                 return
@@ -76,7 +78,7 @@ if __name__ == '__main__':
         count[idx] += 1
 
     readServer = readFromServer.ReadFromServer()
-
+    piPlates   = pi_plates.PiPlates(0, objCfg) 
     timer = Manager()
 
     myContinue = True
@@ -84,7 +86,7 @@ if __name__ == '__main__':
     startTimer = [0, False, False]
 
     timer.add_operation(readServer.readFromServer, 10, [objCfg, retVal[0]])
-    #timer.add_operation(piPlates.readWrite, 600, [objCfg, retVal[1]])
+    timer.add_operation(piPlates.read_write_io, 5, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
@@ -105,7 +107,7 @@ if __name__ == '__main__':
             keepGoing = False
         
         scr.addstr(20, 0, "readFromServer Return: " + retVal[0][0])
-        
+        scr.addstr(25, 0, "read_write_io Return: " + retVal[1][0])
         time.sleep(1)
 
     curses.endwin()
