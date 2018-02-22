@@ -1,6 +1,7 @@
 #import piplates.DAQCplate as DAQC
 import piplates.RELAYplate as RELAY
 import daqc_plate
+import relpay_plate
 import sys
 
 class PiPlates:
@@ -15,11 +16,14 @@ class PiPlates:
         method_name = "read_write_io"
         try:
             daqc = daqc_plate.DaqcPlate(0, cfgObj)
-            ret[0] = "daqcRet: " + str(self.count)
-            self.count += 1#daqc.read_adc()
+            ret = daqc.read_adc()
+            ret[0] = daqc.read_adc()
+            
+            #realy = relay_plate.RealyPalte(0, daqc, cfgObj)
+            #ret[1][0] = 7# relay.set_realys()
         except Exception, ex:
             sys.exit("Error in " + self.name + "." + method_name)
-    #read_write_ioi
+    #read_write_io
 
     def initial_state():
         set_relay(0, 3, 0)
