@@ -52,7 +52,7 @@ helloCount = 0
 kmworldCount = 0
 counters = [0, 0, 0]
 cmnd = ord(' ')
-retVal = [[""], [{}]]
+retVal = [[""], [{}, {}]]
 if __name__ == '__main__':
 
     import time
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     startTimer = [0, False, False]
 
     timer.add_operation(readServer.readFromServer, 10, [objCfg, retVal[0]])
-    timer.add_operation(piPlates.read_write_io, 5, [0, retVal[1]])
+    timer.add_operation(piPlates.read_write_io, 5, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
@@ -109,8 +109,8 @@ if __name__ == '__main__':
         scr.addstr(20, 0, "readFromServer Return: " + retVal[0][0])
         retDict = retVal[1][0]
         scr.addstr(25, 0, "read_write_io DAQC: " + "t1: " +  str(retDict.get('t1')) + " t2: " + str(retDict.get('t2')) + " t3: " + str(retDict.get('t3')) + " v: " + str(retDict.get('v')) )
-        #retArr = retVal[1][1]
-        #scr.addstr(26, 0, "read_write_io RELAY: " + "r1: " + str(retArr[0]))
+        retArr = retVal[1][1]
+        scr.addstr(28, 0, "read_write_io RELAY: " + "r1: " + str(retArr.get('r1')))#Arr[0]))
         time.sleep(1)
 
     curses.endwin()

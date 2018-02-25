@@ -18,7 +18,6 @@ class DaqcPlate:
     #get_temp
 
     def read_adc(self):
-        #return str(DAQC.getADC(0, 1)) + "      " +  str(self.pid) + str(self.get_adc(1))
         t1 = self.get_temp(0)
         t2 = self.get_temp(1)
         t3 = self.get_temp(2)
