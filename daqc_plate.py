@@ -7,7 +7,7 @@ class DaqcPlate:
             self.name = "DaqcPlate"
             self.pid = pid
         except Exception, ex:
-            sys.exit("Error in " + sefl.name)
+            sys.exit("Error in " + "DaqcPlate")
 
     def get_adc(self, idx):
         return DAQC.getADC(self.pid, idx)
