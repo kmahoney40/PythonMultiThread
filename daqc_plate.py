@@ -13,6 +13,7 @@ class DaqcPlate:
         return DAQC.getADC(self.pid, idx)
     #get_adc
 
+
     def get_temp(self, idx):
         return 100 * self.get_adc(idx) - 50
     #get_temp
