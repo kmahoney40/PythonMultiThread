@@ -47,7 +47,6 @@ class Manager(object):
             op.cancel()
         self._event.set()
 
-
 helloCount = 0
 kmworldCount = 0
 counters = [0, 0, 0]

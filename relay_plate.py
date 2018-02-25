@@ -21,7 +21,8 @@ class RelayPlate:
         #self.fanChangeTemp = cfgObj.get('fanChangeTemp')
         #self.fanDelta = cfgObj.get('fanDelta')
     #__init__
-    
+
+
 #    def set_relay(self, idx, state):
 #        method_name = "set_realy"
 #        if state != 0:
