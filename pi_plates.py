@@ -18,7 +18,7 @@ class PiPlates:
             ret[0] = daqc.read_adc()
             
             relay = relay_plate.RelayPlate()
-            ret[1] = {'r1': 1, 'r2': 0}#relay.set_realys()
+            ret[1] = relay.set_realys()
         except Exception, ex:
             sys.exit("Error in " + self.name + "." + method_name)
     #read_write_io

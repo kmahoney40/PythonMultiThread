@@ -112,4 +112,5 @@ if __name__ == '__main__':
         scr.addstr(28, 0, "read_write_io RELAY: " + "r1: " + str(retArr.get('r1')))#Arr[0]))
         time.sleep(1)
 
+    timer.stop()
     curses.endwin()
