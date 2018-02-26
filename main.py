@@ -1,19 +1,17 @@
 
 # http://code.activestate.com/recipes/496800-event-scheduling-threadingtimer/
 
+import curses
+# import piplates.DAQCplate as DAQC
+# import piplates.RELAYplate as RELAY
+import sys
 import thread
 import threading
+
+import pi_plates
 import readConfig
 import readFromServer
-import pi_plates
-import curses
-import piplates.DAQCplate as DAQC
-import piplates.RELAYplate as RELAY
-import pytz
-import requests
-import json
-import sys
-import datetime
+
 
 class Operation(threading._Timer):
     def __init__(self, *args, **kwargs):
