@@ -32,7 +32,7 @@ class Operation(threading._Timer):
             self.finished.set()
 
 
-class Manager(object):
+class Manager1(object):
     ops = []
 
     def add_operation(self, operation, interval, args=[], kwargs={}):
@@ -43,7 +43,7 @@ class Manager(object):
     def stop(self):
         for op in self.ops:
             op.cancel()
-        self._event.set()
+#        self._event.set()
 
 helloCount = 0
 kmworldCount = 0
@@ -76,14 +76,14 @@ if __name__ == '__main__':
 
     readServer = readFromServer.ReadFromServer()
     piPlates   = pi_plates.PiPlates(0, objCfg) 
-    timer = Manager()
+    timer1 = Manager1()
 
     myContinue = True
     keepGoing = True
     startTimer = [0, False, False]
 
-    timer.add_operation(readServer.readFromServer, 10, [objCfg, retVal[0]])
-    timer.add_operation(piPlates.read_write_io, 5, [objCfg, retVal[1]])
+    timer1.add_operation(readServer.readFromServer, 10, [objCfg, retVal[0]])
+    timer1.add_operation(piPlates.read_write_io, 5, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
@@ -110,5 +110,5 @@ if __name__ == '__main__':
         scr.addstr(28, 0, "read_write_io RELAY: " + "r1: " + str(retArr.get('r1')))#Arr[0]))
         time.sleep(1)
 
-    timer.stop()
+    timer1.stop()
     curses.endwin()
