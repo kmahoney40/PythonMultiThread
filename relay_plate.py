@@ -5,6 +5,10 @@ class RelayPlate:
     def __inti__(self, pid):
         self.name = "RelayPlate"
 
+    def reset_relays(pid):
+        for idx in list(range(7)):
+            RELAY.relayOFF(pid, idx)
+
 #class RelayPlate:
 #    def __inti__(self, pid, daqcDict, cfgObj):
 #        try:
