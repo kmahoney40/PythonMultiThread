@@ -2,13 +2,58 @@ import piplates.RELAYplate as RELAY
 import sys
 
 class RelayPlate:
-    def __inti__(self, pid):
+    def __inti__(self, pid, daqcDict, cfgObj):
         self.name = "RelayPlate"
+        self.pid = pid
+        self.daqc_dict = daqcDict
+        # self.cfgObj = cfgObj
+        self.fan_change_temp = cfgObj.fanChangeTemp
+        self.fan_delta = cfgObj.fanDelta
+        self.bat_voltage = cfgObj.volts
+        self.voltage_trigger = cfgObj.voltageTrigger
+        self.fan_on = False
 
-    def reset_relays(pid):
+    def reset_relays(self):
         for idx in list(range(7)):
-            RELAY.relayOFF(pid, idx)
+            RELAY.relayOFF(self.pid, idx)
 
+    def set_relay(self, idx, state):
+        if state != 0:
+            RELAY.relayON(self.pid, idx)
+        else:
+            RELAY.relayOFF(self.pid, idx)
+
+    def get_bool(state, exp):
+        ret_val = False
+        if state and (2 ** exp) > 0:
+            ret_val = True
+        return ret_val
+
+    def get_state_dict(self):
+        ret_dict = {}
+        state = RELAY.relaySTATE(self.pid)
+        for idx in list(range(7)):
+            ret_dict['r' + str(idx)]= self.get_bool(state, idx)
+        return ret_dict
+
+    def set_relays(self):
+        if self.bat_voltage < self.voltage_trigger:
+            self.set_relay(7, 1)
+        else:
+            self.set_relay(7, 0)
+
+        if not self.fan_on and self.daqc_dict['t1'] < self.fan_change_temp + self.fan_delta:
+            self.set_relay(3, 1)
+            self.fanOn = True
+            self.fanChanged = True
+        elif self.fan_on and self.daqc_dict['t1'] < self.fan_change_temp - self.fan_delta:
+            self.set_relay(3, 0)
+            self.fanOn = False
+            self.fanChanged = True
+
+        return self.get_state_dict()
+
+#
 #class RelayPlate:
 #    def __inti__(self, pid, daqcDict, cfgObj):
 #        try:
