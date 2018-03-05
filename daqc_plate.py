@@ -1,5 +1,6 @@
 import piplates.DAQCplate as DAQC
 import sys
+import time
 
 class DaqcPlate:
     def __init__(self, pid, cfgObj):
@@ -19,10 +20,11 @@ class DaqcPlate:
     #get_temp
 
     def read_adc(self):
+        tm = time.time()
         t1 = self.get_temp(0)
         t2 = self.get_temp(1)
         t3 = self.get_temp(2)
         v  = self.get_adc(3)
-        return {'t1': t1, 't2': t2, 't3': t3, 'v': v }# str(t1) + " " + str(t2) + " " + str(t3) + " " + str(t3)
+        return {'time': tm, 't1': t1, 't2': t2, 't3': t3, 'v': v }# str(t1) + " " + str(t2) + " " + str(t3) + " " + str(t3)
     #read_adc
 #DacqPlate

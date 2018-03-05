@@ -74,7 +74,7 @@ if __name__ == '__main__':
         scr.addstr(4, 0, "KM World: " + str(count[idx]) + " " + str(count[2]) + "  " + str(time.time()))
         count[idx] += 1
 
-    readServer = readFromServer.ReadFromServer()
+    readServer = readFromServer.ReadFromServer(objCfg)
     piPlates   = pi_plates.PiPlates(0, objCfg) 
     timer1 = Manager1()
 
@@ -82,8 +82,8 @@ if __name__ == '__main__':
     keepGoing = True
     startTimer = [0, False, False]
 
-    timer1.add_operation(readServer.readFromServer, 10, [objCfg, retVal[0]])
-    timer1.add_operation(piPlates.read_write_io, 5, [objCfg, retVal[1]])
+    timer1.add_operation(readServer.readFromServer, 15, [objCfg, retVal[0]])
+    timer1.add_operation(piPlates.read_write_io, 60, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
@@ -105,9 +105,10 @@ if __name__ == '__main__':
         
         scr.addstr(20, 0, "readFromServer Return: " + retVal[0][0])
         retDict = retVal[1][0]
-        scr.addstr(25, 0, "read_write_io DAQC: " + "t1: " +  str(retDict.get('t1')) + " t2: " + str(retDict.get('t2')) + " t3: " + str(retDict.get('t3')) + " v: " + str(retDict.get('v')) )
+        scr.addstr(25, 0, "read_write_io DAQC: " + "time: " + str(retDict.get('time')) + " t1: " +  str(retDict.get('t1')) + " t2: " + str(retDict.get('t2')) + " t3: " + str(retDict.get('t3')) + " v: " + str(retDict.get('v')))
         retArr = retVal[1][1]
-        scr.addstr(28, 0, "read_write_io RELAY: " + "r1: " + str(retArr.get('r1')))#Arr[0]))
+        scr.addstr(28, 0, "r1: " + str(retArr.get('r1')) + ", r2: " + str(retArr.get('r2')) + ', r3: ' +  str(retArr.get('r3')) + ', r4: ' +  str(retArr.get('r4')) + ', r5: ' + str(retArr.get('r5')) + ', r6: ' + str(retArr.get('r6')) + ', r7: ' + str(retArr.get('r7')))
+
         time.sleep(1)
 
     timer1.stop()
