@@ -14,7 +14,7 @@ class ReadFromServer:
     def __init__(self, cfgObj):
         self.name = "ReadFromServerInstance"
         self.count = 0
-        self.door = door.Door(cfgObj)
+        self.door = door.Door(0, cfgObj)
 
     def readFromServer(self, cfgObj, ret):
         try:
