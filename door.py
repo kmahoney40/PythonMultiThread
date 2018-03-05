@@ -1,16 +1,21 @@
-import curses
 import time
-import piplates.DAQCplate as DAQC
-import request
-from datetime import datetime
+import piplates.RELAYplate as RELAY
+import requests
 
-def getUpdateCmnds():
-    try:
 
-    except Exception, ex:
-        
+class Door:
+    def __init__(self, cfgObj):
+        self.name = "Door"
+        self.url = cfgObj.url + "door"
 
-    else:
+    def door_cmnd(self, override):
+        door_json = str(requests.get(self.url).text)
 
-    finally:
+        if str(door_json.text).find('true') > -1 or override == True:
+            RELAY.relayON(0, 5)
+            time.sleep(0.5)
+            RELAY.relayOFF(0, 5)
+        else:
+            RELAY.relayOFF(0, 5)
+        return door_json
 
