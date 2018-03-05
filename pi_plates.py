@@ -17,7 +17,8 @@ class PiPlates:
             daqc = daqc_plate.DaqcPlate(0, cfgObj)
             ret[0] = daqc.read_adc()
             
-            relay = relay_plate.RelayPlate(0, ret[0], cfgObj)
+            #relay = relay_plate.RelayPlate(0, ret[0], cfgObj)
+            relay = relay_plate.RelayPlate(0, cfgObj, ret[0])
             ret[1] = relay.set_relays()
         except Exception, ex:
             sys.exit("Error in " + self.name + "." + method_name)
