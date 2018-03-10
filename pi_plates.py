@@ -12,8 +12,6 @@ class PiPlates:
         self.url = cfgObj.url + 'piplates'
         self.headers = {'content-type': 'application/json'}
         ret_str = ''
-        #self.cfgObj = cfgObj
-        #self.
     #__init__
 
     def read_write_io(self, cfgObj, ret):

@@ -15,7 +15,6 @@ class Operation(threading._Timer):
     def __init__(self, *args, **kwargs):
         threading._Timer.__init__(self, *args, **kwargs)
         self.setDaemon(True)
-        #self.lastStart = time.time()
 
     def run(self):
         while True:
