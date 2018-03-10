@@ -2,8 +2,6 @@
 # http://code.activestate.com/recipes/496800-event-scheduling-threadingtimer/
 
 import curses
-# import piplates.DAQCplate as DAQC
-# import piplates.RELAYplate as RELAY
 import sys
 import thread
 import threading
@@ -83,7 +81,7 @@ if __name__ == '__main__':
     startTimer = [0, False, False]
 
     timer1.add_operation(readServer.readFromServer, 15, [objCfg, retVal[0]])
-    timer1.add_operation(piPlates.read_write_io, 60, [objCfg, retVal[1]])
+    timer1.add_operation(piPlates.read_write_io, 10, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
