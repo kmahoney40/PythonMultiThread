@@ -6,7 +6,7 @@ import daqc_plate
 import relay_plate
 
 class PiPlates:
-    def __init__(self, cfgObj, ret):
+    def __init__(self, cfgObj):
         self.name = "PiPlates"
         self.count = 0
         self.url = cfgObj.url + 'piplates'
@@ -34,15 +34,16 @@ class PiPlates:
         #
         #     payload = {"TEMP_1": fTemp1, "TEMP_2": fTemp2, "TEMP_3": fTemp3, "FAN_ON": fanOn, "CHARGER_ON": chargerOn,
         #                "VOLTAGE": fVolts, "GMT": str(datetime.utcnow())}
-            self.write_to_server(ret[0], ret[1])
+            self.write_to_server(ret)
 
         except Exception, ex:
             sys.exit("Error in " + self.name + "." + method_name)
     #read_write_io
 
-    def write_to_server(self, daqc, relay):
+    def write_to_server(self, ret):
+        daqc = ret[0]
+        relay = ret[1]
         payload = {"TEMP_1": daqc.get('t1'), "TEMP_2": daqc.get('t2'), "TEMP_3": daqc.get('t3'), "VOLTAGE": daqc.get('v'), "FAN_ON": relay.get('r7'), "CHARGER_ON": relay.get('r3')};
-        ret = requests.post(self.url, json=json.dumps(payload), headers=self.headers)
-        return ret
+        ret[2] = requests.post(self.url, json=json.dumps(payload), headers=self.headers)
     #create_return
 #PiPlates

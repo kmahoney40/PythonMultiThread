@@ -46,7 +46,7 @@ helloCount = 0
 kmworldCount = 0
 counters = [0, 0, 0]
 cmnd = ord(' ')
-retVal = [[""], [{}, {}]]
+retVal = [[""], [{}, {}],""]
 if __name__ == '__main__':
 
     import time
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         count[idx] += 1
 
     readServer = readFromServer.ReadFromServer(objCfg)
-    piPlates   = pi_plates.PiPlates(0, objCfg) 
+    piPlates   = pi_plates.PiPlates(objCfg)
     timer1 = Manager1()
 
     myContinue = True
@@ -106,6 +106,7 @@ if __name__ == '__main__':
         retArr = retVal[1][1]
         scr.addstr(28, 0, "r1: " + str(retArr.get('r1')) + ", r2: " + str(retArr.get('r2')) + ', r3: ' +  str(retArr.get('r3')) + ', r4: ' +  str(retArr.get('r4')) + ', r5: ' + str(retArr.get('r5')) + ', r6: ' + str(retArr.get('r6')) + ', r7: ' + str(retArr.get('r7')))
 
+        scr.addstr(32, 0, "server: " + retVal[2])
         time.sleep(1)
 
     timer1.stop()
