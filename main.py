@@ -2,8 +2,6 @@
 # http://code.activestate.com/recipes/496800-event-scheduling-threadingtimer/
 
 import curses
-# import piplates.DAQCplate as DAQC
-# import piplates.RELAYplate as RELAY
 import sys
 import thread
 import threading
@@ -17,7 +15,6 @@ class Operation(threading._Timer):
     def __init__(self, *args, **kwargs):
         threading._Timer.__init__(self, *args, **kwargs)
         self.setDaemon(True)
-        #self.lastStart = time.time()
 
     def run(self):
         while True:
@@ -49,7 +46,7 @@ helloCount = 0
 kmworldCount = 0
 counters = [0, 0, 0]
 cmnd = ord(' ')
-retVal = [[""], [{}, {}]]
+retVal = [[""], [{}, {}, [""]]]
 if __name__ == '__main__':
 
     import time
@@ -75,7 +72,7 @@ if __name__ == '__main__':
         count[idx] += 1
 
     readServer = readFromServer.ReadFromServer(objCfg)
-    piPlates   = pi_plates.PiPlates(0, objCfg) 
+    piPlates   = pi_plates.PiPlates(objCfg)
     timer1 = Manager1()
 
     myContinue = True
@@ -83,7 +80,7 @@ if __name__ == '__main__':
     startTimer = [0, False, False]
 
     timer1.add_operation(readServer.readFromServer, 15, [objCfg, retVal[0]])
-    timer1.add_operation(piPlates.read_write_io, 60, [objCfg, retVal[1]])
+    timer1.add_operation(piPlates.read_write_io, 10, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
@@ -109,6 +106,7 @@ if __name__ == '__main__':
         retArr = retVal[1][1]
         scr.addstr(28, 0, "r1: " + str(retArr.get('r1')) + ", r2: " + str(retArr.get('r2')) + ', r3: ' +  str(retArr.get('r3')) + ', r4: ' +  str(retArr.get('r4')) + ', r5: ' + str(retArr.get('r5')) + ', r6: ' + str(retArr.get('r6')) + ', r7: ' + str(retArr.get('r7')))
 
+        scr.addstr(32, 0, "server: " + str(retVal[1][2][0]))
         time.sleep(1)
 
     timer1.stop()

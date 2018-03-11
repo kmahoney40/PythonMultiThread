@@ -10,13 +10,13 @@ class Door:
         self.url = cfgObj.url + "door"
         self.pid = pid
     def door_cmnd(self, override):
-        door_json = str(time.time()) + str(requests.get(self.url).text)
+        ret_json = str(time.time()) + str(requests.get(self.url).text)
 
-        if str(door_json).find('true') > -1 or override == True:
+        if str(ret_json).find('true') > -1 or override == True:
             RELAY.relayON(self.pid, 5)
             time.sleep(0.5)
             RELAY.relayOFF(self.pid, 5)
         else:
             RELAY.relayOFF(self.pid, 5)
-        return door_json
+        return ret_json
 
