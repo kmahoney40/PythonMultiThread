@@ -13,7 +13,6 @@ class PiPlates:
         self.count = 0
         self.url = cfgObj.url + 'piplates'
         self.headers = {'content-type': 'application/json'}
-        ret_str = ''
     #__init__
 
     def read_write_io(self, cfgObj, ret):
@@ -33,8 +32,6 @@ class PiPlates:
     def write_to_server(self, ret):
         daqc = ret[0]
         relay = ret[1]
-        #payload = {"TEMP_1": daqc.get('t1'), "TEMP_2": daqc.get('t2'), "TEMP_3": daqc.get('t3'), "VOLTAGE": daqc.get('v'), "FAN_ON": relay.get('r7'), "CHARGER_ON": relay.get('r3'), "GMT": str(datetime.utcnow())};
-
         payload = {"TEMP_1": daqc.get('t1'), "TEMP_2": daqc.get('t2'), "TEMP_3": daqc.get('t3'), "VOLTAGE": daqc.get('v'), "FAN_ON": relay.get('r7'), "CHARGER_ON": relay.get('r3'), "GMT": str(datetime.utcnow())};
         r = requests.post(self.url, json=json.dumps(payload), headers=self.headers)
         return str(r.status_code) + ": " + r.text

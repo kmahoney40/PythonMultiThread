@@ -7,6 +7,7 @@ class DaqcPlate:
         try:
             self.name = "DaqcPlate"
             self.pid = pid
+            self.alpha = cfgObj.alpha
         except Exception, ex:
             sys.exit("Error in " + "DaqcPlate")
 
@@ -14,9 +15,10 @@ class DaqcPlate:
         return DAQC.getADC(self.pid, idx)
     #get_adc
 
-
     def get_temp(self, idx):
-        return 100 * self.get_adc(idx) - 50
+        temp = 100 * self.get_adc(idx) - 50
+        temp = self.lp_filter(temp)
+        return temp
     #get_temp
 
     def read_adc(self):
@@ -25,6 +27,11 @@ class DaqcPlate:
         t2 = self.get_temp(1)
         t3 = self.get_temp(2)
         v  = self.get_adc(3)
-        return {'time': tm, 't1': t1, 't2': t2, 't3': t3, 'v': v }# str(t1) + " " + str(t2) + " " + str(t3) + " " + str(t3)
+        return {'time': tm, 't1': t1, 't2': t2, 't3': t3, 'v': v }
     #read_adc
+
+    def lp_filter(self, raw):
+        filt = (1 - self.alpha) + raw + self.alpha * raw
+        filt = round(filt, 1)
+        return filt
 #DacqPlate
