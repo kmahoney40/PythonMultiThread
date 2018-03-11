@@ -15,19 +15,19 @@ class Operation(threading._Timer):
     def __init__(self, *args, **kwargs):
         threading._Timer.__init__(self, *args, **kwargs)
         self.setDaemon(True)
+        self.lastStart = time.time()
 
     def run(self):
         while True:
             self.finished.clear()
-            #self.finished.wait(self.interval - (time.time() - self.lastStart))
-            self.finished.wait(self.interval)
+            self.finished.wait(self.interval - (time.time() - self.lastStart))
             if not self.finished.isSet():
-                #self.lastStart = time.time()
+                self.lastStart = time.time()
                 self.function(*self.args, **self.kwargs)
             else:
                 return
             self.finished.set()
-
+#Operation
 
 class Manager1(object):
     ops = []
@@ -40,7 +40,7 @@ class Manager1(object):
     def stop(self):
         for op in self.ops:
             op.cancel()
-#        self._event.set()
+#Manager1
 
 helloCount = 0
 kmworldCount = 0
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     startTimer = [0, False, False]
 
     timer1.add_operation(readServer.readFromServer, 15, [objCfg, retVal[0]])
-    timer1.add_operation(piPlates.read_write_io, 10, [objCfg, retVal[1]])
+    timer1.add_operation(piPlates.read_write_io, 600, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
