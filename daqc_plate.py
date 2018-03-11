@@ -31,7 +31,7 @@ class DaqcPlate:
     #read_adc
 
     def lp_filter(self, raw):
-        filt = (1 - self.alpha) + raw + self.alpha * raw
+        filt = (1 - self.alpha) * raw + self.alpha * raw
         filt = round(filt, 1)
         return filt
 #DacqPlate
