@@ -8,7 +8,7 @@ class ConfigObj:
             self.configData = configFile.read()
             configJson = json.loads(self.configData)
             self.url = configJson["url"]
-            self.fanChangeeTemp = configJson["fanChangeTemp"]
+            self.fanChangeTemp = configJson["fanChangeTemp"]
             self.fanDelta = configJson["fanDelta"]
             self.voltageTrigger = configJson["voltageTrigger"]
             self.alpha = configJson["alpha"]

@@ -1,22 +1,29 @@
 import requests
 import sys
 import curses
+import time
+import door
 
 class ReadFromServer:
     scr = curses.initscr()
     curses.noecho()
     scr.nodelay(1)
 
-    def __init__(self):
+    counter = 0
+
+    def __init__(self, cfgObj):
         self.name = "ReadFromServerInstance"
+        self.count = 0
+        self.door = door.Door(0, cfgObj)
 
     def readFromServer(self, cfgObj, ret):
         try:
-#            scr.addstr(25, 0, "ReadFromServer")
-            url = cfgObj.url + "door"
-            ret = requests.get(url)
-#            scr.addstr(20, 0, str(ret))
-            raise ValueError(str(ret))
+            ret[0] = self.door.door_cmnd(False)
+            # url = cfgObj.url + "door"
+            ret[0] = str(self.count) + ret[0]
+            self.count += 1
+            if self.count > 9:
+                self.count = 0
         except Exception, ex:
-            sys.exit("Error in readFromServer! " + str(ex))
+            sys.exit("Error in readFromServer! " + str(ex.message))
 
