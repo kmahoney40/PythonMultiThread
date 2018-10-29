@@ -78,7 +78,7 @@ if __name__ == '__main__':
     startTimer = [0, False, False]
 
     thread_manager.add_operation(readServer.readFromServer, 15, [objCfg, retVal[0]])
-    thread_manager.add_operation(piPlates.read_write_io, 600, [objCfg, retVal[1]])
+    thread_manager.add_operation(piPlates.read_write_io, 20, [objCfg, retVal[1]])
 
     while keepGoing:
         scr.addstr(0, 0, "Press \"h\" for Help and \"q\" to exit...")
@@ -89,6 +89,8 @@ if __name__ == '__main__':
             waitMs = 1.0 - (ms / 1000000.0)
             time.sleep(waitMs)
             startTimer[0] = 1
+
+        scr.addstr(1, 0, "Time: " + str(dtm))
 
         cmnd = scr.getch()
         if cmnd == curses.ERR:
