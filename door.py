@@ -2,6 +2,7 @@ import time
 import piplates.RELAYplate as RELAY
 import relay_plate
 import requests
+import datetime
 
 
 class Door:
@@ -10,7 +11,8 @@ class Door:
         self.url = cfgObj.url + "door"
         self.pid = pid
     def door_cmnd(self, override):
-        ret_json = str(time.time()) + str(requests.get(self.url).text)
+        now = datetime.datetime.now()
+        ret_json = str(now) + str(requests.get(self.url).text)
 
         if str(ret_json).find('true') > -1 or override == True:
             RELAY.relayON(self.pid, 5)
